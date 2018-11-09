@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Design by samir</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="wrap">
+	<h1>Custom Select</h1>
+<select>
+  <option>HTML</option>
+  <option>HTML CSS3</option>
+  <option active>HTML CSS3 SASS</option>
+  <option>HTML CSS3 SASS LESS </option>
+  <option>HTML CSS3 SASS LESS  STYLUS</option>
+  <option>JQUERY</option>
+  <option>BOOTSTRAP</option>
+  <option>MATERIAL</option>
+  <option>REACT</option>
+  <option>ANGULAR</option>
+</select>
+</div>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script>
+	$('select').each(function(){
+    var $this = $(this), selectOptions = $(this).children('option').length;
+  
+    $this.addClass('hide-select'); 
+    $this.wrap('<div class="select"></div>');
+    $this.after('<div class="custom-select"></div>');
+
+    var $customSelect = $this.next('div.custom-select');
+    $customSelect.text($this.children('option').eq(0).text());
+  
+    var $optionlist = $('<ul />', {
+        'class': 'select-options'
+    }).insertAfter($customSelect);
+  
+    for (var i = 0; i < selectOptions; i++) {
+        $('<li />', {
+            text: $this.children('option').eq(i).text(),
+            rel: $this.children('option').eq(i).val()
+        }).appendTo($optionlist);
+    }
+  
+    var $optionlistItems = $optionlist.children('li');
+  
+    $customSelect.click(function(e) {
+        e.stopPropagation();
+        $('div.custom-select.active').not(this).each(function(){
+            $(this).removeClass('active').next('ul.select-options').hide();
+        });
+        $(this).toggleClass('active').next('ul.select-options').slideToggle();
+    });
+  
+    $optionlistItems.click(function(e) {
+        e.stopPropagation();
+        $customSelect.text($(this).text()).removeClass('active');
+        $this.val($(this).attr('rel'));
+        $optionlist.hide();
+    });
+  
+    $(document).click(function() {
+        $customSelect.removeClass('active');
+        $optionlist.hide();
+    });
+
+});
+</script>
+</body>
+</html>
